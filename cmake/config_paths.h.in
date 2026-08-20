@@ -1,0 +1,17 @@
+/**
+ * @copyright Copyright (c) 2025-2026
+ * UK Research and Innovation,
+ * Science and Technology Facilities Council,
+ * Hartree Centre
+ **/
+
+#ifndef QASC_CMAKE_CONFIG_PATHS_H
+#define QASC_CMAKE_CONFIG_PATHS_H
+
+#define DEPS_QUEST_INCLUDE_DIR "@QUEST_INCLUDE_DIRS@"
+#define DEPS_QUEST_LIB_DIR "@QUEST_LIB_DIR@"
+#define DEPS_QUEST_VERSION_MINOR @QuEST_VERSION_MINOR@
+
+#define DEPS_QASC_INCLUDE_DIR "@DEPS_INCLUDE_DIRS@"
+
+#endif    // defined DLQASM_CMAKE_QUEST_PATHS_H
