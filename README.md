@@ -1,8 +1,14 @@
-# Building QASC - QASM3-to-CPP compiler, simulated by QuEST quantum backend
+# QASC
+
+## Introduction
+QASC (Quantum Assembly Compiler) is a high-performance source-to-source compiler designed for hybrid quantum-classical computing. It translates OpenQASM 3.0 programs into
+highly optimised C++ code, emitting classical instructions natively and routing quantum operations directly to the [QuEST](https://github.com/QuEST-Kit/QuEST) state-vector simulator.
+
+By compiling down to a standard C++ binary, QASC allows developers to test, benchmark, and validate complex hybrid workflows portably, leveraging high-performance resources. It bridges the gap between theoretical algorithm design and physical deployment, ensuring user workflows are fully verified and ready for integration with real quantum computing hardware.
 
 ## Dependencies
 - cmake
-- clang++19 (or higher) / g++13 (or higher)
+- clang++19 (or higher) / g++13 (or higher) / Intel OneAPI C++ 2026
 - Antlr4 (included)
 - QuEST  (v4.2.0+)
 
@@ -15,17 +21,21 @@ cmake --build build
 The project will build the included Antlr4 (`deps/antlr`) as a dependency.
 
 By default the project will look for QuEST in the usual system/home directories.
-If it fails to find a valid QuEST installation it will pull and build v4.2.0 release from GitHub.
+If it fails to find a valid QuEST installation it will pull and build v4.2.0 release
+from GitHub.
 
 ## Running
-Users can override the QuEST library and include paths with environment variables. In case when user does not want to `make install` QuEST (but just have a local build), user should export environment variables.
+Users can override the QuEST library and include paths with environment variables.
+In case when user does not want to `make install` QuEST (but just have a local build),
+user should export environment variables.
 
 ```
 export DEPS_QUEST_INCLUDE_DIR=<path-to-quest-include>
 export DEPS_QUEST_LIB_DIR=<path-to-quest-lib>
 ```
 
-Additionally, users can provide command-line flags to override the default libraries (e.g. QuEST, MPI if QuEST was built in distributed mode etc.).
+Additionally, users can provide command-line flags to override the default libraries
+(e.g. QuEST, MPI if QuEST was built in distributed mode etc.).
 User specified paths and libraries take precedences over those set during installation.
 
 ```
@@ -63,20 +73,7 @@ make test
 ```
 
 ## Authors and Citation
-QASC can be cited using BibTeX below:
-```
-@misc{qasc2026,
-      title={Quantum Integration Software Suite for HPC-Quantum Computing Workflows},
-      author={Meller, Mateusz and Thacker, Joseph C R and Keal, Thomas W and Szeremi, Vendel},
-      year={2026},
-      doi={},
-      eprint={},
-      archivePrefix={arXiv},
-      primaryClass={quant-ph}
-}
-```
-
-Companion paper which used QASC
+QASC white paper is in preparation. In the meantime this work can be acknowledged by citing the companion paper which used QASC to validate hybrid quantum chemistry workflows.
 ```
 @article{10.1021/acs.jctc.6c00542,
     author = {Thacker, Joseph C. R. and Meller, Mateusz and Popescu, Alberto and Patterson, Andrew and Izsák, Róbert and Szeremi, Vendel and Keal, Thomas W.},
