@@ -1,7 +1,7 @@
 # QASC
 
 ## Introduction
-QASC (Quantum Assembly Compiler) is a high-performance source-to-source compiler designed for hybrid quantum-classical computing. It translates OpenQASM 3.0 programs into
+QASC (Quantum Assembly Compiler) is a high-performance source-to-source compiler designed for hybrid quantum-classical computing. It translates [OpenQASM 3](https://github.com/openqasm/openqasm) programs into
 highly optimised C++ code, emitting classical instructions natively and routing quantum operations directly to the [QuEST](https://github.com/QuEST-Kit/QuEST) state-vector simulator.
 
 By compiling down to a standard C++ binary, QASC allows developers to test, benchmark, and validate complex hybrid workflows portably, leveraging high-performance resources. It bridges the gap between theoretical algorithm design and physical deployment, ensuring user workflows are fully verified and ready for integration with real quantum computing hardware.
@@ -9,8 +9,10 @@ By compiling down to a standard C++ binary, QASC allows developers to test, benc
 ## Dependencies
 - cmake
 - clang++19 (or higher) / g++13 (or higher) / Intel OneAPI C++ 2026
-- Antlr4 (v4.13.2)
-- QuEST  (v4.2.0+)
+- [Antlr4](https://github.com/antlr/antlr4) (v4.13.2)
+- [QuEST](https://github.com/QuEST-Kit/QuEST) (v4.2.0+)
+- [doctest](https://github.com/doctest/doctest)
+- [argparse](https://github.com/p-ranav/argparse)
 
 ## Building
 ```
