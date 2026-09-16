@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Meller"
+  given-names: "Mateusz"
+  orcid: "https://orcid.org/0009-0003-3045-3342"
+- family-names: "Thacker"
+  given-names: "Joseph C. R."
+- family-names: "Szeremi"
+  given-names: "Vendel"
+- family-names: "Keal"
+  given-names: "Thomas W."
+  orcid: "https://orcid.org/0000-0001-8747-3975"
+title: "QASC"
+version: 0.4.0
+doi: 10.5281/zenodo.1234
+date-released: 2026-09-21
+url: "https://github.com/stfc/QASC"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Thacker"
+    given-names: "Joseph C. R."
+  - family-names: "Meller"
+    given-names: "Mateusz"
+    orcid: "https://orcid.org/0009-0003-3045-3342"
+  - family-names: "Popescu"
+    given-names: "Alberto"
+  - family-names: "Patterson"
+    given-names: "Andrew"
+  - family-names: "Izsák"
+    given-names: "Róbert"
+  - family-names: "Szeremi"
+    given-names: "Vendel"
+  - family-names: "Keal"
+    given-names: "Thomas W."
+    orcid: "https://orcid.org/0000-0001-8747-3975"
+  doi: "10.1021/acs.jctc.6c00542"
+  journal: "Journal of Chemical Theory and Computation"
+  month: 8
+  start: 8201 # First page number
+  end: 8214 # Last page number
+  title: "Hybrid HPC and Quantum Computing Framework for Multiscale Modeling of Chemical Systems"
+  issue: 16
+  volume: 22
+  year: 2026
