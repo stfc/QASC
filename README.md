@@ -9,7 +9,7 @@ By compiling down to a standard C++ binary, QASC allows developers to test, benc
 ## Dependencies
 - cmake
 - clang++19 (or higher) / g++13 (or higher) / Intel OneAPI C++ 2026
-- Antlr4 (included)
+- Antlr4 (v4.13.2)
 - QuEST  (v4.2.0+)
 
 ## Building
@@ -18,7 +18,7 @@ CC=<c-comp> CXX=<cpp-comp> cmake -G <gen> -S . -B build (optional) -DEXTRA_RPATH
 cmake --build build
 ```
 
-The project will build the included Antlr4 (`deps/antlr`) as a dependency.
+The project will pull and build Antlr4 as a dependency.
 
 By default the project will look for QuEST in the usual system/home directories.
 If it fails to find a valid QuEST installation it will pull and build v4.2.0 release
