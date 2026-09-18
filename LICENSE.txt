@@ -1,6 +1,8 @@
 MIT License
 
-Copyright (c) 2026 The QASC Authors and Contributors
+Copyright (c) 2026  UK Research and Innovation,
+ Science and Technology Facilities Council, Hartree Centre
+
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
