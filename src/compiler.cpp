@@ -28,7 +28,7 @@
 #include <vector>
 
 namespace {
-const std::string qascInternalQuESTQureg{"qascInternalQuestQureg"};
+const std::string qascInternalQuESTQureg{ "qascInternalQuestQureg" };
 
 enum class OpType { QASC_UNARY_EXPRESSION, QASC_BINARY_EXPRESSION };
 
@@ -37,19 +37,19 @@ enum class OpType { QASC_UNARY_EXPRESSION, QASC_BINARY_EXPRESSION };
 std::string Compiler::warningMessage(antlr4::ParserRuleContext* ctx,
                                      const std::string& msg) {
     if (ctx == nullptr) {
-        throw std::runtime_error(std::string("\033[1;31m") +
-                                 "error: " + "\033[0m" + "null context.\n");
+        throw std::runtime_error(std::string("\033[1;31m")
+                                 + "error: " + "\033[0m" + "null context.\n");
     }
 
-    std::string error = currentFilename_ + " " + std::string("\033[1;35m") +
-                        "warning: " + "\033[0m" + msg + "\n" +
-                        std::to_string(ctx->getStart()->getLine()) + " | ";
+    std::string error = currentFilename_ + " " + std::string("\033[1;35m")
+                        + "warning: " + "\033[0m" + msg + "\n"
+                        + std::to_string(ctx->getStart()->getLine()) + " | ";
 
     ssize_t startIdx = ctx->start->getStartIndex();
     ssize_t stopIdx = ctx->stop->getStopIndex();
     error += ctx->start->getInputStream()->getText(
-                 antlr4::misc::Interval(startIdx, stopIdx)) +
-             "\n";
+                 antlr4::misc::Interval(startIdx, stopIdx))
+             + "\n";
 
     return (error);
 }
@@ -59,19 +59,19 @@ std::string Compiler::errorMessage(antlr4::ParserRuleContext* ctx,
     std::string error;
 
     if (ctx == nullptr) {
-        error = std::string("\033[1;31m") + "error: " + "\033[0m" +
-                "null context.\n";
+        error = std::string("\033[1;31m") + "error: " + "\033[0m"
+                + "null context.\n";
 
     } else {
-        error = currentFilename_ + " " + std::string("\033[1;31m") +
-                "error: " + "\033[0m" + msg + "\n" +
-                std::to_string(ctx->getStart()->getLine()) + " | ";
+        error = currentFilename_ + " " + std::string("\033[1;31m")
+                + "error: " + "\033[0m" + msg + "\n"
+                + std::to_string(ctx->getStart()->getLine()) + " | ";
 
         ssize_t startIdx = ctx->start->getStartIndex();
         ssize_t stopIdx = ctx->stop->getStopIndex();
         error += ctx->start->getInputStream()->getText(
-                     antlr4::misc::Interval(startIdx, stopIdx)) +
-                 "\n";
+                     antlr4::misc::Interval(startIdx, stopIdx))
+                 + "\n";
     }
 
     return (error);
@@ -163,9 +163,8 @@ std::any Compiler::visitProgram(qasm3Parser::ProgramContext* ctx) {
 
     // check if user has defined main themselves, if so, return early
     if (std::find_if(definedFuncs_.begin(), definedFuncs_.end(),
-                     [](const auto& fnSig) {
-                         return "main" == fnSig.fnName;
-                     }) != definedFuncs_.end()) {
+                     [](const auto& fnSig) { return "main" == fnSig.fnName; })
+        != definedFuncs_.end()) {
         return true;
     }
 
@@ -509,9 +508,9 @@ std::any Compiler::visitGateCallStatement(
         return true;
     }
 
-    auto gateName{ctx->Identifier()->getText()};
-    auto gatePower{1};
-    std::string gatePowerStr{""};
+    auto gateName{ ctx->Identifier()->getText() };
+    auto gatePower{ 1 };
+    std::string gatePowerStr{ "" };
     handleGateModifier(ctx->gateModifier(), gateName, gatePower, gatePowerStr);
 
     if (applyingInverse_) {
@@ -568,8 +567,11 @@ std::any Compiler::visitMeasureArrowAssignmentStatement(
                  ->rangeExpression()
                  .empty()) {
             processingSlice_ = true;
-            if (ctx->indexedIdentifier()->indexOperator().size() > 1 ||
-                !ctx->indexedIdentifier()->indexOperator(0)->COMMA().empty()) {
+            if (ctx->indexedIdentifier()->indexOperator().size() > 1
+                || !ctx->indexedIdentifier()
+                        ->indexOperator(0)
+                        ->COMMA()
+                        .empty()) {
                 throw std::runtime_error(errorMessage(
                     ctx, std::format("currently only 1D slices are "
                                      "allowed. From {}",
@@ -586,8 +588,8 @@ std::any Compiler::visitMeasureArrowAssignmentStatement(
                              "set indexing expression in quantum measurements "
                              "are not supported."));
         } else {
-            code_.add(Generator::emitAssignmentFront(varName, "=") +
-                      "one_qubit_");
+            code_.add(Generator::emitAssignmentFront(varName, "=")
+                      + "one_qubit_");
         }
     } else {
         code_.add(Generator::emitAssignmentFront(varName, "="));
@@ -693,12 +695,12 @@ std::any Compiler::visitIoDeclarationStatement(
     qasm3Parser::IoDeclarationStatementContext* ctx) {
     callingFromDeclaration_ = true;
     if (ctx->scalarType()) {
-        auto type{extractScalarType(ctx, ctx->scalarType()->getText())};
+        auto type{ extractScalarType(ctx, ctx->scalarType()->getText()) };
         if (type == "float") {
             type = "double";
         }
 
-        const auto id{ctx->Identifier()->getText()};
+        const auto id{ ctx->Identifier()->getText() };
 
         if (type != "double" && type != "std::complex<double>") {
             std::string bitArraySize = "32";
@@ -712,10 +714,10 @@ std::any Compiler::visitIoDeclarationStatement(
                 bitArraySize = "1";
             }
 
-            if (ctx->scalarType()->designator() &&
-                ctx->scalarType()->designator()->expression()) {
-                bitArraySize =
-                    ctx->scalarType()->designator()->expression()->getText();
+            if (ctx->scalarType()->designator()
+                && ctx->scalarType()->designator()->expression()) {
+                bitArraySize
+                    = ctx->scalarType()->designator()->expression()->getText();
             }
 
             auto commaPos = type.find(',');
@@ -725,19 +727,19 @@ std::any Compiler::visitIoDeclarationStatement(
 
         if (ctx->OUTPUT()) {
             code_.add(Generator::emitIoDeclStmt(type, id, ""));
-            outputs_.emplace_back(Output{type, id, 0});
+            outputs_.emplace_back(Output{ type, id, 0 });
         } else if (ctx->INPUT()) {
-            inputs_.emplace_back(Input{type, id, 0});
+            inputs_.emplace_back(Input{ type, id, 0 });
         } else {
             throw std::runtime_error(errorMessage(
                 ctx,
                 std::format("error in IO declaration in {}.", ctx->getText())));
         }
     } else if (ctx->arrayType()) {
-        const int numDim =
-            ctx->arrayType()->expressionList()->expression().size();
-        std::string type =
-            extractScalarType(ctx, ctx->arrayType()->scalarType()->getText());
+        const int numDim
+            = ctx->arrayType()->expressionList()->expression().size();
+        std::string type
+            = extractScalarType(ctx, ctx->arrayType()->scalarType()->getText());
         if (type == "float") {
             type = "double";
         }
@@ -750,13 +752,13 @@ std::any Compiler::visitIoDeclarationStatement(
                 isAngle = ", true";
             }
 
-            if (ctx->arrayType()->scalarType()->BIT() ||
-                ctx->arrayType()->scalarType()->BOOL()) {
+            if (ctx->arrayType()->scalarType()->BIT()
+                || ctx->arrayType()->scalarType()->BOOL()) {
                 bitArraySize = "1";
             }
 
-            if (ctx->arrayType()->scalarType()->designator() &&
-                ctx->arrayType()->scalarType()->designator()->expression()) {
+            if (ctx->arrayType()->scalarType()->designator()
+                && ctx->arrayType()->scalarType()->designator()->expression()) {
                 bitArraySize = ctx->arrayType()
                                    ->scalarType()
                                    ->designator()
@@ -769,15 +771,15 @@ std::any Compiler::visitIoDeclarationStatement(
             type += std::format(" {}{}>", bitArraySize, isAngle);
         }
 
-        const auto id{ctx->Identifier()->getText()};
-        std::string defaultIntializer{""};
+        const auto id{ ctx->Identifier()->getText() };
+        std::string defaultIntializer{ "" };
         for (int i = 0; i < numDim; ++i) {
-            auto expr =
-                ctx->arrayType()->expressionList()->expression(i)->getText();
+            auto expr
+                = ctx->arrayType()->expressionList()->expression(i)->getText();
             std::string sndArg = ", 0)";    // default 0 initialization
             if (numDim - i - 1 != 0) {
-                sndArg =
-                    ", " + Utils::createNDimVectorStr(numDim - i - 1, type);
+                sndArg
+                    = ", " + Utils::createNDimVectorStr(numDim - i - 1, type);
             }
             defaultIntializer += "(" + expr + sndArg;
         }
@@ -789,13 +791,13 @@ std::any Compiler::visitIoDeclarationStatement(
         if (ctx->OUTPUT()) {
             code_.add(Generator::emitIoDeclStmt(
                 Generator::emitNdArray(numDim, type), id, defaultIntializer));
-            outputs_.emplace_back(Output{type, id, numDim});
+            outputs_.emplace_back(Output{ type, id, numDim });
         } else if (ctx->INPUT()) {
             if (numDim > 1) {
                 throw std::runtime_error(errorMessage(
                     ctx, "multidimensional inputs are not supported."));
             }
-            inputs_.emplace_back(Input{type, id, numDim});
+            inputs_.emplace_back(Input{ type, id, numDim });
         } else {
             throw std::runtime_error(errorMessage(
                 ctx,
@@ -832,7 +834,7 @@ std::any Compiler::visitOldStyleDeclarationStatement(
                                                    defaultInitializer));
 
         if (scopeLvl_ == 0) {
-            potentialOutputs_.emplace_back(Output{type, regName, 0});
+            potentialOutputs_.emplace_back(Output{ type, regName, 0 });
         }
     } else if (ctx->QREG()) {
         code_.add(
@@ -858,15 +860,15 @@ std::any Compiler::visitQuantumDeclarationStatement(
     const auto qregName = ctx->Identifier()->getText();
     std::string expression = "1";
 
-    if (ctx->qubitType()->designator() &&
-        ctx->qubitType()->designator()->expression()) {
+    if (ctx->qubitType()->designator()
+        && ctx->qubitType()->designator()->expression()) {
         expression = ctx->qubitType()->designator()->expression()->getText();
         expression = Utils::replacePowerOp(expression);
         expression = Utils::replaceAllCastExpr(expression);
     }
 
-    if (expression.size() > 0 &&
-        (expression[0] == '-' || expression[0] == '0')) {
+    if (expression.size() > 0
+        && (expression[0] == '-' || expression[0] == '0')) {
         throw std::runtime_error(
             errorMessage(ctx,
                          "invalid qubit declaration. Number of qubits should "
@@ -883,7 +885,7 @@ std::any Compiler::visitQuantumDeclarationStatement(
 
 std::any Compiler::visitDefStatement(qasm3Parser::DefStatementContext* ctx) {
     callingFromDefStmt_ = true;
-    std::string returnType{""};
+    std::string returnType{ "" };
 
     const auto codeSizeOnDefEnter = code_.size();
 
@@ -904,7 +906,7 @@ std::any Compiler::visitDefStatement(qasm3Parser::DefStatementContext* ctx) {
 
     definedFuncs_.emplace_back(fnName, returnType);
 
-    std::string args{""};
+    std::string args{ "" };
     if (ctx->argumentDefinitionList()) {
         args = std::any_cast<std::string>(
             ctx->argumentDefinitionList()->accept(this));
@@ -940,11 +942,12 @@ std::any Compiler::visitDefStatement(qasm3Parser::DefStatementContext* ctx) {
     }
 
     if (std::find(fnSignature.argTypes.begin(), fnSignature.argTypes.end(),
-                  "QuregSlice & ") != fnSignature.argTypes.end()) {
+                  "QuregSlice & ")
+        != fnSignature.argTypes.end()) {
         hasQuregArg = true;
     }
 
-    std::string templateExpr{""};
+    std::string templateExpr{ "" };
     if (hasQuregArg && hasArrArg) {
         templateExpr += "template <QasmQuregT T";
         for (size_t i = 0; i < numArrArgs; ++i) {
@@ -998,7 +1001,7 @@ std::any Compiler::visitDefStatement(qasm3Parser::DefStatementContext* ctx) {
             fullDefStmt.emplace_back(code_.last());
             code_.pop();
         }
-        std::string fullDefStmtStr{""};
+        std::string fullDefStmtStr{ "" };
         std::reverse(fullDefStmt.begin(), fullDefStmt.end());
         for (auto& s : fullDefStmt) {
             fullDefStmtStr += s;
@@ -1075,7 +1078,7 @@ std::any Compiler::visitGateStatement(qasm3Parser::GateStatementContext* ctx) {
             fullDefStmt.emplace_back(code_.last());
             code_.pop();
         }
-        std::string fullDefStmtStr{""};
+        std::string fullDefStmtStr{ "" };
         std::reverse(fullDefStmt.begin(), fullDefStmt.end());
         for (auto& s : fullDefStmt) {
             fullDefStmtStr += s;
@@ -1101,7 +1104,7 @@ std::any Compiler::visitAssignmentStatement(
             initQuantumBackend();
         }
 
-        auto varName{ctx->getText().substr(0, ctx->getText().find("="))};
+        auto varName{ ctx->getText().substr(0, ctx->getText().find("=")) };
         if (currentAssignmentName_ == "") {
             currentAssignmentName_ = varName;
         }
@@ -1118,11 +1121,11 @@ std::any Compiler::visitAssignmentStatement(
                      ->rangeExpression()
                      .empty()) {
                 processingSlice_ = true;
-                if (ctx->indexedIdentifier()->indexOperator().size() > 1 ||
-                    !ctx->indexedIdentifier()
-                         ->indexOperator(0)
-                         ->COMMA()
-                         .empty()) {
+                if (ctx->indexedIdentifier()->indexOperator().size() > 1
+                    || !ctx->indexedIdentifier()
+                            ->indexOperator(0)
+                            ->COMMA()
+                            .empty()) {
                     throw std::runtime_error(errorMessage(
                         ctx, std::format("currently only 1D slices are "
                                          "allowed. From {}",
@@ -1139,8 +1142,8 @@ std::any Compiler::visitAssignmentStatement(
                     "set indexing expression in quantum measurements "
                     "are not supported."));
             } else {
-                code_.add(Generator::emitAssignmentFront(varName, "=") +
-                          "one_qubit_");
+                code_.add(Generator::emitAssignmentFront(varName, "=")
+                          + "one_qubit_");
             }
 
         } else {
@@ -1186,8 +1189,11 @@ std::any Compiler::visitAssignmentStatement(
             code_.pop();
 
             processingSlice_ = true;
-            if (ctx->indexedIdentifier()->indexOperator().size() > 1 ||
-                !ctx->indexedIdentifier()->indexOperator(0)->COMMA().empty()) {
+            if (ctx->indexedIdentifier()->indexOperator().size() > 1
+                || !ctx->indexedIdentifier()
+                        ->indexOperator(0)
+                        ->COMMA()
+                        .empty()) {
                 throw std::runtime_error(errorMessage(
                     ctx, std::format("currently only 1D slices are "
                                      "allowed. From {}",
@@ -1384,8 +1390,8 @@ std::any Compiler::visitCastExpression(
     qasm3Parser::CastExpressionContext* ctx) {
     tryRegisterMainFn();
     if (ctx->scalarType()) {
-        const std::string type =
-            extractScalarType(ctx, ctx->scalarType()->getText());
+        const std::string type
+            = extractScalarType(ctx, ctx->scalarType()->getText());
         code_.add(Generator::emitCastFront(type));
         ctx->expression()->accept(this);
         code_.add(Generator::emitCastBack());
@@ -1447,16 +1453,16 @@ std::any Compiler::visitBitwiseOrExpression(
 std::any Compiler::visitCallExpression(
     qasm3Parser::CallExpressionContext* ctx) {
     tryRegisterMainFn();
-    auto fnName{ctx->Identifier()->getText()};
+    auto fnName{ ctx->Identifier()->getText() };
 
     // iterate through expr list
     // find function signature based on function name
     // for each expr:
     //      get the type, transform to valid call and output new expr
 
-    const auto it =
-        std::find_if(definedFuncs_.begin(), definedFuncs_.end(),
-                     [&](const auto& fnSig) { return fnName == fnSig.fnName; });
+    const auto it = std::find_if(
+        definedFuncs_.begin(), definedFuncs_.end(),
+        [&](const auto& fnSig) { return fnName == fnSig.fnName; });
 
     if (it == definedFuncs_.end()) {
         throw std::runtime_error(errorMessage(
@@ -1471,7 +1477,7 @@ std::any Compiler::visitCallExpression(
         initQuantumBackend();
     }
 
-    std::string expressionList{""};
+    std::string expressionList{ "" };
     const auto numArgs = ctx->expressionList()->expression().size();
     if (fnName != "sizeof" && fnSignature.argTypes.size() != numArgs) {
         throw std::runtime_error(
@@ -1688,8 +1694,8 @@ std::any Compiler::visitMeasureExpression(
 
 std::any Compiler::visitRangeExpression(
     qasm3Parser::RangeExpressionContext* ctx) {
-    std::string parentName =
-        ctx->parent->getText().substr(0, ctx->parent->getText().find("["));
+    std::string parentName
+        = ctx->parent->getText().substr(0, ctx->parent->getText().find("["));
     auto start = ctx->expression(0)->getText();
     start = Utils::replacePowerOp(start);
     start = Utils::replaceAllCastExpr(start);
@@ -1847,7 +1853,7 @@ std::any Compiler::visitArgumentDefinition(
 
 std::any Compiler::visitArgumentDefinitionList(
     qasm3Parser::ArgumentDefinitionListContext* ctx) {
-    std::string argList{""};
+    std::string argList{ "" };
     size_t numArrArgs = 0;
     for (size_t i = 0; i < ctx->argumentDefinition().size(); ++i) {
         FuncSignature& fnSignature = definedFuncs_.back();
@@ -2034,7 +2040,7 @@ void Compiler::compile(const std::string& cppComp,
     if (isFormatting) {
         auto sysExitCode = std::system(
             std::string("clang-format " + tmpCpp + " > " + outputCpp).c_str());
-        if (sysExitCode < 0) {
+        if (sysExitCode != 0) {
             throw std::runtime_error(Utils::externalErrorMessage(
                 std::format("in compile(): clang-format returned "
                             "with error code: {}.",
@@ -2042,33 +2048,37 @@ void Compiler::compile(const std::string& cppComp,
         }
 
         sysExitCode = std::system(std::string("rm " + tmpCpp).c_str());
-        if (sysExitCode < 0) {
+        if (sysExitCode != 0) {
             throw std::runtime_error(Utils::externalErrorMessage(
                 std::format("in compile(): rm {} returned with error code: {}.",
                             tmpCpp, sysExitCode)));
         }
     }
-    std::string compilerCall = cppComp + std::string(" -std=c++20 ") +
-                               outputCpp + std::string(" -o ") + outFile +
-                               includePath + libPath + libs + rpathPath +
-                               " -lQuEST ";
+    std::string compilerCall = cppComp + std::string(" -std=c++20 -fopenmp ")
+                               + outputCpp + std::string(" -o ") + outFile
+                               + includePath + libPath + libs + rpathPath
+                               + " -lQuEST ";
 
     if (isVerbose) {
         Utils::print(std::format("{}\n", compilerCall));
     }
 
     auto sysExitCode = std::system(compilerCall.c_str());    // compile
-    if (sysExitCode < 0) {
-        throw std::runtime_error(Utils::externalErrorMessage(
-            std::format("in compile(): call to backend ({}) returned "
-                        "with error code: {}.",
-                        compilerCall, sysExitCode)));
+    if (sysExitCode != 0) {
+        throw std::runtime_error(Utils::externalErrorMessage(std::format(
+            "in compile(): call to backend ({}) returned "
+            "with error code: {}.\n\n"
+            "This might be caused by a known "
+            "error when QuEST was built as a static library and did "
+            "not pull it's dependencies correctly.\n"
+            "Consider adding OpenMP library to the qasc call.",
+            compilerCall, sysExitCode)));
     }
 }
 
 void Compiler::initQuantumBackend() {
-    if (!isQbackendInit_ && (!callingFromDefStmt_ || callingFromMainFn_) &&
-        !callingFromGateDeclaration_) {
+    if (!isQbackendInit_ && (!callingFromDefStmt_ || callingFromMainFn_)
+        && !callingFromGateDeclaration_) {
         isQbackendInit_ = true;
         if (totalNumQubits_ == "0") {
             totalNumQubits_ = "1";
@@ -2104,8 +2114,8 @@ void Compiler::initQuantumBackend() {
 }
 
 void Compiler::tryRegisterMainFn() {
-    if (callingFromDefStmt_ || callingFromGateDeclaration_ ||
-        callingFromDeclaration_) {
+    if (callingFromDefStmt_ || callingFromGateDeclaration_
+        || callingFromDeclaration_) {
         return;
     }
 
@@ -2141,7 +2151,7 @@ void Compiler::handleGateModifier(
     std::string& gateName,
     int& gatePower,
     std::string& gatePowerStr) {
-    bool enteredPowModifier{false};
+    bool enteredPowModifier{ false };
 
     const std::vector<std::string> builtInCtrlGates{
         "x", "X", "y",    "z",  "h",     "s",  "t",  "u",
@@ -2166,10 +2176,11 @@ void Compiler::handleGateModifier(
             }
 
             if (std::find(builtInCtrlGates.begin(), builtInCtrlGates.end(),
-                          gateName) == builtInCtrlGates.end()) {
-                std::string errMsg =
-                    "ctrl modifier can be applied only to the following "
-                    "gates: ";
+                          gateName)
+                == builtInCtrlGates.end()) {
+                std::string errMsg
+                    = "ctrl modifier can be applied only to the following "
+                      "gates: ";
 
                 for (auto& g : builtInCtrlGates) {
                     errMsg += g + " ";
@@ -2194,10 +2205,11 @@ void Compiler::handleGateModifier(
         }
         if (modifier->INV()) {
             if (std::find(builtInInvGates.begin(), builtInInvGates.end(),
-                          gateName) == builtInInvGates.end()) {
-                std::string errMsg =
-                    "inv modifier can be applied only to the following "
-                    "gates: ";
+                          gateName)
+                == builtInInvGates.end()) {
+                std::string errMsg
+                    = "inv modifier can be applied only to the following "
+                      "gates: ";
 
                 for (auto& g : builtInInvGates) {
                     errMsg += g + " ";
@@ -2220,10 +2232,11 @@ void Compiler::handleGateModifier(
                 gateName = gateName.substr(1);
             }
             if (std::find(builtInCtrlGates.begin(), builtInCtrlGates.end(),
-                          gateName) == builtInCtrlGates.end()) {
-                std::string errMsg =
-                    "negctrl modifier can be applied only to the following "
-                    "gates: ";
+                          gateName)
+                == builtInCtrlGates.end()) {
+                std::string errMsg
+                    = "negctrl modifier can be applied only to the following "
+                      "gates: ";
 
                 for (auto& g : builtInCtrlGates) {
                     errMsg += g + " ";
@@ -2256,8 +2269,8 @@ std::vector<std::string> Compiler::getCodeFromIncludes() {
                 // exploiting that we know the structure of generated
                 // code, find snd }
                 size_t rightCurlyBracketPos = includeCode.find("}", pos);
-                const auto endQbackendInitPos =
-                    includeCode.find("}", rightCurlyBracketPos + 1);
+                const auto endQbackendInitPos
+                    = includeCode.find("}", rightCurlyBracketPos + 1);
 
                 // get everything past } closing qbackend init
                 newIncludeCode += includeCode.substr(endQbackendInitPos);
