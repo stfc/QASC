@@ -23,7 +23,7 @@ cmake --build build
 The project will pull and build Antlr4 as a dependency.
 
 By default the project will look for QuEST in the usual system/home directories.
-If it fails to find a valid QuEST installation it will pull and build v4.2.0 release
+If it fails to find a valid QuEST installation it will pull and build the v4.3.0 release
 from GitHub.
 
 ## Running
