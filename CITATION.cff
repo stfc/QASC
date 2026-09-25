@@ -12,7 +12,7 @@ authors:
   given-names: "Thomas W."
   orcid: "https://orcid.org/0000-0001-8747-3975"
 title: "QASC"
-version: 0.4.0
+version: 0.1.1
 doi: 10.5281/zenodo.1234
 date-released: 2026-09-21
 url: "https://github.com/stfc/QASC"

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 
-project(QASC VERSION 0.4.0 LANGUAGES C CXX)
+project(QASC VERSION 0.1.1 LANGUAGES C CXX)
 
 option(
   BUILD_TESTING
@@ -41,11 +41,13 @@ if (QuEST_FOUND)
 
     get_filename_component(QUEST_LIB_DIR "${QUEST_LIB_LOCATION}" DIRECTORY)
 else()
-    # TODO: once there is a new QuEST release remember to update it.
+    option(BUILD_SHARED_LIBS "Build shared library. Turned ON by default." ON)
+    message(STATUS "Shared library is turned ${BUILD_SHARED_LIBS}. Set BUILD_SHARED_LIBS to modify.")
+
     FetchContent_Declare(
         QuEST
         GIT_REPOSITORY https://github.com/QuEST-Kit/QuEST
-        GIT_TAG v4.2.0
+        GIT_TAG v4.3.0
     )
     FetchContent_MakeAvailable(QuEST)
 
@@ -57,7 +59,7 @@ else()
         "${CMAKE_CURRENT_BINARY_DIR}/_deps/quest-src/quest/include -I ${CMAKE_CURRENT_BINARY_DIR}/_deps/quest-src -I ${CMAKE_CURRENT_BINARY_DIR}/_deps/quest-build "
     )
 
-    set(QuEST_VERSION_MINOR 2)
+    set(QuEST_VERSION_MINOR 3)
 endif()
 
 set(ANTLR4_WITH_STATIC_CRT OFF)
